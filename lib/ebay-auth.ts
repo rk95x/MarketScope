@@ -1,64 +1,48 @@
 interface EbayTokenResponse {
   access_token: string;
-  token_type: string;
   expires_in: number;
-  scope: string;
+  token_type: string;
 }
 
-export class EbayAuthError extends Error {
-  constructor(message: string, public status?: number, public details?: string) {
+class EbayAuthError extends Error {
+  status: number;
+  details: string;
+
+  constructor(message: string, status: number, details: string) {
     super(message);
     this.name = 'EbayAuthError';
+    this.status = status;
+    this.details = details;
   }
 }
 
-export async function getEbayAccessToken(): Promise<string> {
-  const clientId = process.env.EBAY_CLIENT_ID;
-  const clientSecret = process.env.EBAY_CLIENT_SECRET;
-
-  if (!clientId || !clientSecret) {
-    throw new EbayAuthError('Missing eBay credentials in environment variables');
+export async function getEbayAccessToken(): Promise<EbayTokenResponse> {
+  const credentials = process.env.EBAY_CREDENTIALS;
+  if (!credentials) {
+    throw new EbayAuthError('Missing eBay credentials', 500, 'EBAY_CREDENTIALS environment variable is not set');
   }
-
-  const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
   try {
     const response = await fetch('https://api.ebay.com/identity/v1/oauth2/token', {
       method: 'POST',
       headers: {
-        Authorization: `Basic ${credentials}`,
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Basic ${credentials}`
       },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-        scope: 'https://api.ebay.com/oauth/api_scope https://api.ebay.com/oauth/api_scope/buy.browse',
-      }).toString(),
+      body: 'grant_type=client_credentials&scope=https://api.ebay.com/oauth/api_scope'
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Failed to get eBay access token:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText,
-      });
-      throw new EbayAuthError(
-        'Failed to get eBay access token',
-        response.status,
-        errorText
-      );
+      throw new EbayAuthError('Failed to fetch eBay access token', response.status, errorText);
     }
 
     const data = await response.json() as EbayTokenResponse;
-    return data.access_token;
+    return data;
   } catch (error) {
     if (error instanceof EbayAuthError) {
       throw error;
     }
-    throw new EbayAuthError(
-      'Unexpected error while getting eBay access token',
-      undefined,
-      error instanceof Error ? error.message : String(error)
-    );
+    throw new EbayAuthError('Error fetching eBay access token', 500, error instanceof Error ? error.message : 'Unknown error');
   }
 } 
