@@ -35,7 +35,8 @@ export default async function handler(
 
   try {
     const token = await getEbayAccessToken();
-    let url = 'https://api.ebay.com/buy/browse/v1/item_summary/search?';
+    let url = 'https://api.sandbox.ebay.com/buy/browse/v1/item_summary/search?';
+
 
     if (q) {
       url += `q=${encodeURIComponent(q as string)}`;
