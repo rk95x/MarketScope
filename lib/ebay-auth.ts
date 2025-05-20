@@ -31,7 +31,7 @@ export async function getEbayAccessToken(): Promise<string> {
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
   try {
-    const response = await fetch('https://api.ebay.com/identity/v1/oauth2/token', {
+    const response = await fetch('https://api.sandbox.ebay.com/identity/v1/oauth2/token', {
       method: 'POST',
       headers: {
         Authorization: `Basic ${credentials}`,
@@ -39,8 +39,8 @@ export async function getEbayAccessToken(): Promise<string> {
       },
       body: new URLSearchParams({
         grant_type: 'client_credentials',
-        scope: 'https://api.ebay.com/oauth/api_scope/buy.browse',
-      }).toString(),
+        scope: 'https://api.ebay.com/oauth/api_scope', // ✅ use only this in Sandbox
+      }),
     });
 
     if (!response.ok) {
