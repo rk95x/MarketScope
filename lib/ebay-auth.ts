@@ -30,23 +30,34 @@ export async function getEbayAccessToken(): Promise<string> {
 
   const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-  const response = await fetch('https://api.ebay.com/identity/v1/oauth2/token', {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${credentials}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      grant_type: 'client_credentials',
-      scope: 'https://api.ebay.com/oauth/api_scope/buy.browse',
-    }),
-  });
+  try {
+    const response = await fetch('https://api.ebay.com/identity/v1/oauth2/token', {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        scope: 'https://api.ebay.com/oauth/api_scope/buy.browse',
+      }).toString(),
+    });
 
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new EbayAuthError('Failed to fetch eBay access token', response.status, errorText);
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new EbayAuthError('Failed to fetch eBay access token', response.status, errorText);
+    }
+
+    const data: EbayTokenResponse = await response.json();
+    return data.access_token;
+  } catch (error) {
+    if (error instanceof EbayAuthError) {
+      throw error;
+    }
+    throw new EbayAuthError(
+      'Error fetching eBay access token',
+      500,
+      error instanceof Error ? error.message : 'Unknown error'
+    );
   }
-
-  const data: EbayTokenResponse = await response.json();
-  return data.access_token;
 }
