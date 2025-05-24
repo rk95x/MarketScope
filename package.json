@@ -13,11 +13,13 @@
     "dotenv": "^16.3.1",
     "next": "^15.3.2",
     "node-fetch": "^2.7.0",
+    "recharts": "^2.15.3",
     "swr": "^2.3.3"
   },
   "devDependencies": {
     "@types/node": "^20.17.48",
     "@types/node-fetch": "^2.6.12",
+    "@types/recharts": "^1.8.29",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
