@@ -1,6 +1,3 @@
-// =============================
-// lib/ebay-auth.ts
-// =============================
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 
@@ -12,7 +9,7 @@ interface EbayOAuthResponse {
   expires_in: number;
 }
 
-export const getEbayAccessToken = async () => {
+export const getEbayAccessToken = async (): Promise<string> => {
   const clientId = process.env.EBAY_CLIENT_ID;
   const clientSecret = process.env.EBAY_CLIENT_SECRET;
 
@@ -30,7 +27,10 @@ export const getEbayAccessToken = async () => {
     },
     body: new URLSearchParams({
       grant_type: 'client_credentials',
-      scope: 'https://api.ebay.com/oauth/api_scope https://api.ebay.com/oauth/api_scope/sell.account',
+      scope: [
+        'https://api.ebay.com/oauth/api_scope/sell.account',
+        'https://api.ebay.com/oauth/api_scope/sell.inventory'
+      ].join(' ')
     }).toString(),
   });
 
