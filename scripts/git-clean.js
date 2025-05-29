@@ -1,9 +1,52 @@
 const { execSync } = require('child_process');
+const fs = require('fs');
 
 try {
-  // First, add all untracked files to .gitignore
-  console.log('Adding untracked files to .gitignore...');
-  execSync('echo "\n.env\nscripts/git-clean.js" >> .gitignore', { stdio: 'inherit' });
+  // First, ensure .gitignore has the correct entries
+  console.log('Updating .gitignore...');
+  const gitignoreContent = `
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# scripts
+scripts/git-clean.js
+`;
+  fs.writeFileSync('.gitignore', gitignoreContent);
 
   // Stage all changes
   console.log('Staging all changes...');
@@ -20,14 +63,6 @@ try {
   // Force garbage collection
   console.log('Cleaning up git history...');
   execSync('git gc --aggressive --prune=now', { stdio: 'inherit' });
-
-  // Add .gitignore
-  console.log('Adding .gitignore...');
-  execSync('git add .gitignore', { stdio: 'inherit' });
-
-  // Create commit
-  console.log('Creating commit...');
-  execSync('git commit -m "Remove .env from git tracking and add to .gitignore"', { stdio: 'inherit' });
 
   // Force push
   console.log('Force pushing to remove sensitive data...');
