@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getEbayAccessToken } from '@/lib/ebay-auth';
+import { getEbayAccessToken } from '../../lib/ebay-auth';
 
 interface EbayItem {
   itemId: string;
