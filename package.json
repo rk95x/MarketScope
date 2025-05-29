@@ -10,7 +10,8 @@
     "login-url": "ts-node generate-login-url.ts",
     "dev": "next dev",
     "build": "next build",
-    "vercel-build": "next build"
+    "vercel-build": "next build",
+    "git:clean": "node scripts/git-clean.js"
   },
   "dependencies": {
     "@types/react": "^19.1.4",
