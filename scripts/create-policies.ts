@@ -5,7 +5,7 @@ import {
     createFulfillmentPolicy,
     createPaymentPolicy,
     createReturnPolicy,
-  } from './lib/ebay-policies';
+  } from '../lib/ebay-policies';
   
   import fs from 'fs';
   import path from 'path';
