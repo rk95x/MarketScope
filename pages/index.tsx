@@ -1,289 +1,167 @@
-import React, { useState, useMemo } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import ThemeToggle from '../components/ThemeToggle';
-import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-} from 'recharts';
+import { useState, useEffect } from 'react';
 import { mockListings, MockListing } from '../mock/buyApiResults';
-
-// Demo mode flag
-const demoMode = true;
-
-type TimeRange = 'all' | '7days' | '30days';
-
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  sold: number;
-  category: string;
-  seller: string;
-  image?: string;
-  url: string;
-  condition: string;
-  soldDate: string;
-}
+import Sidebar from '../components/Sidebar';
+import Topbar from '../components/Topbar';
+import StatCard from '../components/StatCard';
+import ProductCard from '../components/ProductCard';
+import ProductModal from '../components/ProductModal';
+import { StatCardShimmer, ProductCardShimmer } from '../components/LoadingShimmer';
 
 export default function Home() {
-  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState<'product' | 'seller'>('product');
-  const [timeRange, setTimeRange] = useState<TimeRange>('30days');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
+  const [viewType, setViewType] = useState<'Product' | 'Seller'>('Product');
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedProduct, setSelectedProduct] = useState<MockListing | null>(null);
+  const [filteredProducts, setFilteredProducts] = useState<MockListing[]>([]);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!searchTerm.trim()) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      if (demoMode) {
-        // Use mock data in demo mode
-        const filteredListings = mockListings.filter(listing => {
-          const matchesSearch = listing.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            listing.sellerUsername.toLowerCase().includes(searchTerm.toLowerCase());
-          
-          if (!matchesSearch) return false;
-
-          // Filter by time range
-          const soldDate = new Date(listing.soldDate);
-          const now = new Date();
-          
-          switch (timeRange) {
-            case '7days':
-              return now.getTime() - soldDate.getTime() <= 7 * 24 * 60 * 60 * 1000;
-            case '30days':
-              return now.getTime() - soldDate.getTime() <= 30 * 24 * 60 * 60 * 1000;
-            default:
-              return true;
-          }
-        });
-        
-        const mockProducts: Product[] = filteredListings.map(listing => ({
-          id: listing.itemId,
-          title: listing.title,
-          price: listing.price,
-          sold: listing.salesLast30Days,
-          category: 'Electronics', // Mock category
-          seller: listing.sellerUsername,
-          image: listing.imageUrl,
-          url: `https://www.ebay.com/itm/${listing.itemId}`,
-          condition: 'New',
-          soldDate: listing.soldDate
-        }));
-        
-        setProducts(mockProducts);
-      } else {
-        // Real API call will go here
-        const queryParam = searchType === 'product' ? 'q' : 'seller';
-        const response = await fetch(`/api/seller-listings?${queryParam}=${encodeURIComponent(searchTerm)}`);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch listings');
-        }
-
-        const data = await response.json();
-        setProducts(data);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
+  // Simulate initial loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Filter products based on search term and view type
+  useEffect(() => {
+    if (!searchTerm.trim()) {
+      setFilteredProducts(mockListings);
+      return;
     }
-  };
 
-  // Chart data: total sold per seller
-  const chartData = useMemo(() => {
-    const totals: Record<string, number> = {};
-    products.forEach((item) => {
-      if (!totals[item.seller]) totals[item.seller] = 0;
-      totals[item.seller] += item.sold;
+    const searchLower = searchTerm.toLowerCase();
+    const filtered = mockListings.filter((product) => {
+      if (viewType === 'Product') {
+        return product.title.toLowerCase().includes(searchLower);
+      } else {
+        return product.sellerUsername.toLowerCase().includes(searchLower);
+      }
     });
-    return Object.entries(totals)
-      .map(([seller, total]) => ({ seller, total }))
-      .sort((a, b) => b.total - a.total)
-      .slice(0, 10); // Show top 10 sellers
-  }, [products]);
+    setFilteredProducts(filtered);
+  }, [searchTerm, viewType]);
 
-  // Global stats
-  const globalStats = useMemo(() => {
-    const totalProducts = products.length;
-    const totalSold = products.reduce((sum, item) => sum + item.sold, 0);
-    const averagePrice = products.reduce((sum, item) => sum + item.price, 0) / totalProducts || 0;
-    
-    return { totalProducts, totalSold, averagePrice };
-  }, [products]);
+  // Calculate total stats
+  const totalProducts = filteredProducts.length;
+  const totalUnitsSold = filteredProducts.reduce((sum, item) => sum + item.salesLast30Days, 0);
+  const avgPrice = filteredProducts.reduce((sum, item) => sum + item.price, 0) / totalProducts || 0;
+
+  // Get top sellers by units sold
+  const topSellers = [...filteredProducts]
+    .sort((a, b) => b.salesLast30Days - a.salesLast30Days)
+    .slice(0, 5);
 
   return (
-    <div className="min-h-screen bg-mme-background font-sans">
-      <div className="max-w-5xl mx-auto px-4 py-8 md:py-12">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-mme-text tracking-tight">
-            MarketScope
-          </h1>
-          <div className="flex items-center space-x-4">
-            <Link
-              href="/competitors"
-              className="text-mme-text hover:text-mme-buttonHover transition-colors"
-            >
-              View Competitors
-            </Link>
-            <ThemeToggle />
-          </div>
-        </div>
-
-        {demoMode && (
-          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-yellow-800 flex items-center">
-              <span className="mr-2">🧪</span>
-              Demo Mode: Showing fake product data until Buy API access is approved.
-            </p>
-          </div>
-        )}
-
-        {/* Search Form */}
-        <form onSubmit={handleSearch} className="mb-8">
-          <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-            <div className="flex-1 w-full md:max-w-2xl">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder={searchType === 'product' ? 'Search products...' : 'Enter seller name...'}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mme-button focus:border-transparent bg-white text-mme-body"
+    <div className="min-h-screen bg-[#F0F9FF]">
+      <Sidebar />
+      <Topbar 
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+        viewType={viewType}
+        onViewTypeChange={setViewType}
+      />
+      
+      <main className="ml-0 md:ml-64 pt-16 p-4 md:p-6 transition-all duration-300">
+        <div className="max-w-7xl mx-auto">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+            {isLoading ? (
+              <>
+                <StatCardShimmer />
+                <StatCardShimmer />
+                <StatCardShimmer />
+              </>
+            ) : (
+              <>
+                <StatCard
+                  title="Total Products"
+                  value={totalProducts}
+                  icon="📦"
+                  trend={{ value: 12, isPositive: true }}
                 />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-2">
-                  <select
-                    value={timeRange}
-                    onChange={(e) => setTimeRange(e.target.value as TimeRange)}
-                    className="px-3 py-1 rounded border border-gray-300 bg-white text-mme-body focus:ring-2 focus:ring-mme-button"
-                  >
-                    <option value="all">All Time</option>
-                    <option value="7days">Last 7 Days</option>
-                    <option value="30days">Last 30 Days</option>
-                  </select>
-                  <select
-                    value={searchType}
-                    onChange={(e) => setSearchType(e.target.value as 'product' | 'seller')}
-                    className="px-3 py-1 rounded border border-gray-300 bg-white text-mme-body focus:ring-2 focus:ring-mme-button"
-                  >
-                    <option value="product">Search by product</option>
-                    <option value="seller">Search by seller</option>
-                  </select>
+                <StatCard
+                  title="Units Sold"
+                  value={totalUnitsSold}
+                  icon="💰"
+                  trend={{ value: 8, isPositive: true }}
+                />
+                <StatCard
+                  title="Average Price"
+                  value={`$${avgPrice.toFixed(2)}`}
+                  icon="📊"
+                  trend={{ value: 5, isPositive: false }}
+                />
+              </>
+            )}
+          </div>
+
+          {/* Main Content Area */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+            {/* Product List */}
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300">
+              <div className="p-4 border-b border-gray-100">
+                <h2 className="text-lg font-semibold text-[#111827]">Products</h2>
+              </div>
+              <div className="divide-y divide-gray-100">
+                {isLoading ? (
+                  <>
+                    <ProductCardShimmer />
+                    <ProductCardShimmer />
+                    <ProductCardShimmer />
+                  </>
+                ) : filteredProducts.length > 0 ? (
+                  filteredProducts.map((product) => (
+                    <ProductCard
+                      key={product.itemId}
+                      product={product}
+                      onClick={() => setSelectedProduct(product)}
+                    />
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-gray-500">
+                    No products found matching your search criteria.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right Sidebar */}
+            <div className="space-y-4 md:space-y-6">
+              {/* Top Sellers Chart */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 transition-all duration-300">
+                <h3 className="text-lg font-semibold text-[#111827] mb-4">
+                  Top Sellers
+                </h3>
+                <div className="space-y-4">
+                  {isLoading ? (
+                    <>
+                      <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                    </>
+                  ) : (
+                    topSellers.map((seller) => (
+                      <div key={seller.itemId} className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600">{seller.sellerUsername}</span>
+                        <span className="text-sm font-medium text-[#111827]">
+                          {seller.salesLast30Days} units
+                        </span>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full md:w-auto px-6 py-3 bg-mme-button text-white rounded-lg hover:bg-mme-buttonHover transition-colors shadow-md disabled:opacity-50"
-            >
-              {isLoading ? 'Searching...' : 'Search'}
-            </button>
           </div>
-        </form>
+        </div>
+      </main>
 
-        {error && (
-          <div className="mb-8 p-4 bg-red-50 text-red-600 rounded-lg">
-            {error}
-          </div>
-        )}
-
-        {products.length > 0 && (
-          <>
-            {/* Global Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <h3 className="text-sm font-medium text-mme-text">Total Products</h3>
-                <p className="text-2xl font-semibold text-mme-body">{globalStats.totalProducts}</p>
-              </div>
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <h3 className="text-sm font-medium text-mme-text">Total Units Sold</h3>
-                <p className="text-2xl font-semibold text-mme-body">{globalStats.totalSold}</p>
-              </div>
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <h3 className="text-sm font-medium text-mme-text">Average Price</h3>
-                <p className="text-2xl font-semibold text-mme-price">£{globalStats.averagePrice.toFixed(2)}</p>
-              </div>
-            </div>
-
-            {/* Product Table */}
-            <div className="overflow-x-auto rounded-xl shadow-lg border border-gray-200 bg-white mb-8">
-              <table className="min-w-full text-sm text-mme-body">
-                <thead>
-                  <tr className="bg-gray-50">
-                    <th className="p-3 font-bold text-mme-text">Product</th>
-                    <th className="p-3 font-bold text-mme-text">Price</th>
-                    <th className="p-3 font-bold text-mme-text">Sold</th>
-                    <th className="p-3 font-bold text-mme-text">Seller</th>
-                    <th className="p-3 font-bold text-mme-text">Condition</th>
-                    <th className="p-3 font-bold text-mme-text">Last Sale</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-t border-gray-200 hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="p-3">
-                        <a
-                          href={item.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center space-x-3 hover:text-mme-buttonHover"
-                        >
-                          {item.image && (
-                            <img
-                              src={item.image}
-                              alt={item.title}
-                              className="w-12 h-12 object-cover rounded"
-                            />
-                          )}
-                          <span className="font-medium">{item.title}</span>
-                        </a>
-                      </td>
-                      <td className="p-3 font-bold text-mme-price">£{item.price.toFixed(2)}</td>
-                      <td className="p-3">{item.sold}</td>
-                      <td className="p-3">{item.seller}</td>
-                      <td className="p-3">{item.condition}</td>
-                      <td className="p-3">{new Date(item.soldDate).toLocaleDateString()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Bar Chart */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
-              <h2 className="text-xl font-semibold mb-4 text-mme-text">Top Sellers by Units Sold</h2>
-              <div className="w-full h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="seller" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="total" fill="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </>
-        )}
-
-        {!isLoading && products.length === 0 && searchTerm && (
-          <div className="text-center py-12">
-            <p className="text-mme-body text-lg">No products found. Try a different search term.</p>
-          </div>
-        )}
-      </div>
+      {/* Product Modal */}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
     </div>
   );
 }
