@@ -63,7 +63,7 @@ export default function Home() {
       <main className="ml-0 md:ml-64 pt-16 p-4 md:p-6 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
             {isLoading ? (
               <>
                 <StatCardShimmer />
@@ -97,7 +97,7 @@ export default function Home() {
           {/* Main Content Area */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
             {/* Product List */}
-            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300">
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300 overflow-hidden">
               <div className="p-4 border-b border-gray-100">
                 <h2 className="text-lg font-semibold text-[#111827]">Products</h2>
               </div>

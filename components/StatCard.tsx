@@ -10,8 +10,8 @@ interface StatCardProps {
 
 export default function StatCard({ title, value, icon, trend }: StatCardProps) {
   return (
-    <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 h-full">
-      <div className="flex items-start justify-between">
+    <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-gray-100 h-full flex flex-col">
+      <div className="flex items-start justify-between flex-grow">
         <div className="flex-1 min-w-0 pr-4">
           <p className="text-sm font-medium text-gray-600 truncate">{title}</p>
           <p className="text-xl sm:text-2xl font-bold text-[#111827] mt-1 truncate">
