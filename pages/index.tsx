@@ -10,6 +10,8 @@ import { mockListings, MockListing } from '../mock/buyApiResults';
 // Demo mode flag
 const demoMode = true;
 
+type TimeRange = 'all' | '7days' | '30days';
+
 interface Product {
   id: string;
   title: string;
@@ -20,12 +22,14 @@ interface Product {
   image?: string;
   url: string;
   condition: string;
+  soldDate: string;
 }
 
 export default function Home() {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState<'product' | 'seller'>('product');
+  const [timeRange, setTimeRange] = useState<TimeRange>('30days');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
@@ -40,10 +44,25 @@ export default function Home() {
     try {
       if (demoMode) {
         // Use mock data in demo mode
-        const filteredListings = mockListings.filter(listing => 
-          listing.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          listing.sellerUsername.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        const filteredListings = mockListings.filter(listing => {
+          const matchesSearch = listing.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            listing.sellerUsername.toLowerCase().includes(searchTerm.toLowerCase());
+          
+          if (!matchesSearch) return false;
+
+          // Filter by time range
+          const soldDate = new Date(listing.soldDate);
+          const now = new Date();
+          
+          switch (timeRange) {
+            case '7days':
+              return now.getTime() - soldDate.getTime() <= 7 * 24 * 60 * 60 * 1000;
+            case '30days':
+              return now.getTime() - soldDate.getTime() <= 30 * 24 * 60 * 60 * 1000;
+            default:
+              return true;
+          }
+        });
         
         const mockProducts: Product[] = filteredListings.map(listing => ({
           id: listing.itemId,
@@ -54,7 +73,8 @@ export default function Home() {
           seller: listing.sellerUsername,
           image: listing.imageUrl,
           url: `https://www.ebay.com/itm/${listing.itemId}`,
-          condition: 'New'
+          condition: 'New',
+          soldDate: listing.soldDate
         }));
         
         setProducts(mockProducts);
@@ -138,7 +158,16 @@ export default function Home() {
                   placeholder={searchType === 'product' ? 'Search products...' : 'Enter seller name...'}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mme-button focus:border-transparent bg-white text-mme-body"
                 />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2">
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex space-x-2">
+                  <select
+                    value={timeRange}
+                    onChange={(e) => setTimeRange(e.target.value as TimeRange)}
+                    className="px-3 py-1 rounded border border-gray-300 bg-white text-mme-body focus:ring-2 focus:ring-mme-button"
+                  >
+                    <option value="all">All Time</option>
+                    <option value="7days">Last 7 Days</option>
+                    <option value="30days">Last 30 Days</option>
+                  </select>
                   <select
                     value={searchType}
                     onChange={(e) => setSearchType(e.target.value as 'product' | 'seller')}
@@ -194,6 +223,7 @@ export default function Home() {
                     <th className="p-3 font-bold text-mme-text">Sold</th>
                     <th className="p-3 font-bold text-mme-text">Seller</th>
                     <th className="p-3 font-bold text-mme-text">Condition</th>
+                    <th className="p-3 font-bold text-mme-text">Last Sale</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -223,6 +253,7 @@ export default function Home() {
                       <td className="p-3">{item.sold}</td>
                       <td className="p-3">{item.seller}</td>
                       <td className="p-3">{item.condition}</td>
+                      <td className="p-3">{new Date(item.soldDate).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>
