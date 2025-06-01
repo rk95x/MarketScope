@@ -11,14 +11,16 @@ const REQUIRED_SCOPES = [
   'https://api.ebay.com/oauth/api_scope/sell.returns',
 ];
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const clientId = process.env.EBAY_CLIENT_ID;
   const redirectUri = process.env.EBAY_REDIRECT_URI;
 
+  console.log('--- DEBUG: Starting eBay OAuth login ---');
+  console.log('Client ID:', clientId);
+  console.log('Redirect URI:', redirectUri);
+
   if (!clientId || !redirectUri) {
+    console.error('Missing required environment variables');
     return res.status(400).json({
       error: 'Missing required environment variables',
       details: {
@@ -38,8 +40,7 @@ export default function handler(
   authUrl.searchParams.append('scope', scopes);
   authUrl.searchParams.append('state', state);
 
-  // Store state in session/cookie if needed for verification later
-  // This is a basic implementation - you might want to use a more secure method
+  console.log('Generated Auth URL:', authUrl.toString());
 
   return res.redirect(authUrl.toString());
-} 
+}
