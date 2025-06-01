@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import ThemeToggle from '../components/ThemeToggle';
@@ -198,19 +198,12 @@ export default function Home() {
               <h2 className="text-xl font-semibold mb-4 text-mme-text">Top Sellers by Units Sold</h2>
               <div className="w-full h-64">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis dataKey="seller" className="text-xs" stroke="#9CA3AF" />
-                    <YAxis className="text-xs" stroke="#9CA3AF" />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: '#1F2937',
-                        border: 'none',
-                        borderRadius: '0.5rem',
-                        color: '#F3F4F6'
-                      }}
-                    />
-                    <Bar dataKey="total" fill="#4ECDC4" radius={[6, 6, 0, 0]} />
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="seller" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="total" fill="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>

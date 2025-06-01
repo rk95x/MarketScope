@@ -1,23 +1,45 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+const EBAY_SANDBOX_AUTH_URL = 'https://auth.sandbox.ebay.com/oauth2/authorize';
+
+const REQUIRED_SCOPES = [
+  'https://api.ebay.com/oauth/api_scope',
+  'https://api.ebay.com/oauth/api_scope/sell.account',
+  'https://api.ebay.com/oauth/api_scope/sell.inventory',
+  'https://api.ebay.com/oauth/api_scope/sell.fulfillment',
+  'https://api.ebay.com/oauth/api_scope/sell.payment',
+  'https://api.ebay.com/oauth/api_scope/sell.returns',
+];
+
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const clientId = process.env.EBAY_CLIENT_ID;
   const redirectUri = process.env.EBAY_REDIRECT_URI;
 
   if (!clientId || !redirectUri) {
-    return res.status(500).json({ error: 'Missing required environment variables' });
+    return res.status(400).json({
+      error: 'Missing required environment variables',
+      details: {
+        EBAY_CLIENT_ID: !clientId ? 'missing' : 'present',
+        EBAY_REDIRECT_URI: !redirectUri ? 'missing' : 'present',
+      },
+    });
   }
 
-  const scope = encodeURIComponent([
-    'https://api.ebay.com/oauth/api_scope',
-    'https://api.ebay.com/oauth/api_scope/sell.account',
-    'https://api.ebay.com/oauth/api_scope/sell.inventory',
-    'https://api.ebay.com/oauth/api_scope/sell.fulfillment',
-    'https://api.ebay.com/oauth/api_scope/sell.payment',
-    'https://api.ebay.com/oauth/api_scope/sell.returns',
-  ].join(' '));
+  const scopes = REQUIRED_SCOPES.join(' ');
+  const state = Math.random().toString(36).substring(7); // Generate random state for security
 
-  const url = `https://auth.sandbox.ebay.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}`;
-  
-  res.redirect(url);
+  const authUrl = new URL(EBAY_SANDBOX_AUTH_URL);
+  authUrl.searchParams.append('client_id', clientId);
+  authUrl.searchParams.append('redirect_uri', redirectUri);
+  authUrl.searchParams.append('response_type', 'code');
+  authUrl.searchParams.append('scope', scopes);
+  authUrl.searchParams.append('state', state);
+
+  // Store state in session/cookie if needed for verification later
+  // This is a basic implementation - you might want to use a more secure method
+
+  return res.redirect(authUrl.toString());
 } 
