@@ -5,6 +5,10 @@ import ThemeToggle from '../components/ThemeToggle';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
 } from 'recharts';
+import { mockListings, MockListing } from '../mock/buyApiResults';
+
+// Demo mode flag
+const demoMode = true;
 
 interface Product {
   id: string;
@@ -34,15 +38,38 @@ export default function Home() {
     setError(null);
 
     try {
-      const queryParam = searchType === 'product' ? 'q' : 'seller';
-      const response = await fetch(`/api/seller-listings?${queryParam}=${encodeURIComponent(searchTerm)}`);
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch listings');
-      }
+      if (demoMode) {
+        // Use mock data in demo mode
+        const filteredListings = mockListings.filter(listing => 
+          listing.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          listing.sellerUsername.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        
+        const mockProducts: Product[] = filteredListings.map(listing => ({
+          id: listing.itemId,
+          title: listing.title,
+          price: listing.price,
+          sold: listing.salesLast30Days,
+          category: 'Electronics', // Mock category
+          seller: listing.sellerUsername,
+          image: listing.imageUrl,
+          url: `https://www.ebay.com/itm/${listing.itemId}`,
+          condition: 'New'
+        }));
+        
+        setProducts(mockProducts);
+      } else {
+        // Real API call will go here
+        const queryParam = searchType === 'product' ? 'q' : 'seller';
+        const response = await fetch(`/api/seller-listings?${queryParam}=${encodeURIComponent(searchTerm)}`);
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch listings');
+        }
 
-      const data = await response.json();
-      setProducts(data);
+        const data = await response.json();
+        setProducts(data);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -89,6 +116,15 @@ export default function Home() {
             <ThemeToggle />
           </div>
         </div>
+
+        {demoMode && (
+          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-800 flex items-center">
+              <span className="mr-2">🧪</span>
+              Demo Mode: Showing fake product data until Buy API access is approved.
+            </p>
+          </div>
+        )}
 
         {/* Search Form */}
         <form onSubmit={handleSearch} className="mb-8">
