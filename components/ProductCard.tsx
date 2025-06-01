@@ -10,9 +10,9 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
   return (
     <div
       onClick={onClick}
-      className="flex items-center space-x-4 p-4 hover:bg-gray-50 cursor-pointer transition-colors min-h-[88px]"
+      className="flex items-center p-4 hover:bg-gray-50 cursor-pointer transition-colors min-h-[88px]"
     >
-      <div className="relative h-16 w-16 flex-shrink-0 rounded-lg overflow-hidden">
+      <div className="relative h-16 w-16 flex-shrink-0 rounded-lg overflow-hidden mr-4">
         <Image
           src={product.imageUrl}
           alt={product.title}
@@ -30,7 +30,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         </p>
       </div>
       
-      <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 lg:space-x-8 flex-shrink-0 text-right">
+      <div className="flex flex-col sm:flex-row items-end sm:items-center space-y-2 sm:space-y-0 sm:space-x-6 lg:space-x-8 flex-shrink-0 text-right ml-4">
         <div className="flex-shrink-0">
           <p className="text-sm font-medium text-[#111827] whitespace-nowrap">
             ${product.price.toFixed(2)}
