@@ -4,12 +4,10 @@ const EBAY_SANDBOX_AUTH_URL = 'https://auth.sandbox.ebay.com/oauth2/authorize';
 
 const REQUIRED_SCOPES = [
   'https://api.ebay.com/oauth/api_scope',
-  'https://api.ebay.com/oauth/api_scope/sell.account',
-  'https://api.ebay.com/oauth/api_scope/sell.inventory',
-  'https://api.ebay.com/oauth/api_scope/sell.fulfillment',
-  'https://api.ebay.com/oauth/api_scope/sell.payment',
-  'https://api.ebay.com/oauth/api_scope/sell.returns',
+  'https://api.ebay.com/oauth/api_scope/sell.account.readonly',
+  'https://api.ebay.com/oauth/api_scope/sell.inventory.readonly',
 ];
+
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const clientId = process.env.EBAY_CLIENT_ID;
