@@ -63,7 +63,7 @@ export default function Home() {
       <main className="ml-0 md:ml-64 pt-16 p-4 md:p-6 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
             {isLoading ? (
               <>
                 <StatCardShimmer />
@@ -141,8 +141,10 @@ export default function Home() {
                   ) : (
                     topSellers.map((seller) => (
                       <div key={seller.itemId} className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">{seller.sellerUsername}</span>
-                        <span className="text-sm font-medium text-[#111827]">
+                        <span className="text-sm text-gray-600 truncate mr-4">
+                          {seller.sellerUsername}
+                        </span>
+                        <span className="text-sm font-medium text-[#111827] whitespace-nowrap">
                           {seller.salesLast30Days} units
                         </span>
                       </div>
