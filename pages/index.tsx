@@ -5,6 +5,7 @@ import Topbar from '../components/Topbar';
 import StatCard from '../components/StatCard';
 import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
+import TrendCharts from '../components/TrendCharts';
 import { StatCardShimmer, ProductCardShimmer } from '../components/LoadingShimmer';
 
 export default function Home() {
@@ -109,9 +110,13 @@ export default function Home() {
             {/* Product List */}
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300 overflow-hidden">
               <div className="p-4 border-b border-gray-100">
-                <h2 className="text-lg font-semibold text-[#111827]">Products</h2>
+                <h2 className="text-lg font-semibold text-[#111827]">Search Results</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  Powered by mock data – real insights coming soon
+                </p>
               </div>
               <div className="divide-y divide-gray-100">
+                <ProductCard isHeader />
                 {isLoading ? (
                   <>
                     <ProductCardShimmer />
@@ -164,6 +169,9 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* Trend Charts */}
+          <TrendCharts />
         </div>
       </main>
 
