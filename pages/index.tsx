@@ -62,6 +62,16 @@ export default function Home() {
       
       <main className="ml-0 md:ml-64 pt-24 p-4 md:p-6 transition-all duration-300">
         <div className="max-w-7xl mx-auto">
+          {/* Welcome Header */}
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl md:text-4xl font-bold text-[#111827] mb-3">
+              Welcome to MarketScope
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Instant insights into eBay listings, trends, and sellers.
+            </p>
+          </div>
+
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8 mt-8 md:mt-12">
             {isLoading ? (
@@ -156,6 +166,13 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="ml-0 md:ml-64 py-6 px-4 md:px-6 bg-white border-t border-gray-200">
+        <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
+          © 2025 MarketScope. All rights reserved.
+        </div>
+      </footer>
 
       {/* Product Modal */}
       {selectedProduct && (

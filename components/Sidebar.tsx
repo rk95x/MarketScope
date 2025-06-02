@@ -60,6 +60,13 @@ export default function Sidebar() {
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[#111827]">MarketScope</h1>
         </div>
+
+        {/* Mock Data Banner */}
+        <div className="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p className="text-sm text-yellow-800">
+            ⚠️ This demo uses mock data while we await eBay API approval.
+          </p>
+        </div>
         
         <nav className="space-y-2">
           {navItems.map((item) => {
