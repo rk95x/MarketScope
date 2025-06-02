@@ -106,7 +106,7 @@ export default function Home() {
           </div>
 
           {/* Main Content Area */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
             {/* Product List */}
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300 overflow-hidden">
               <div className="p-4 border-b border-gray-100">
@@ -140,7 +140,7 @@ export default function Home() {
             </div>
 
             {/* Right Sidebar */}
-            <div className="space-y-4 md:space-y-6">
+            <div className="space-y-6">
               {/* Top Sellers Chart */}
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 transition-all duration-300">
                 <h3 className="text-lg font-semibold text-[#111827] mb-4">

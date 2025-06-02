@@ -23,13 +23,13 @@ const mockData = generateMockData();
 
 export default function TrendCharts() {
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 mt-6">
-      <h2 className="text-lg font-semibold text-[#111827] mb-6">Listing Trends</h2>
+    <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 mt-10">
+      <h2 className="text-xl font-semibold text-[#111827] mb-8">Listing Trends</h2>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Listings Over Time Chart */}
         <div className="h-[300px]">
-          <h3 className="text-sm font-medium text-gray-600 mb-4">Listings Over Time</h3>
+          <h3 className="text-xl font-semibold text-[#111827] mb-6">Listings Over Time</h3>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={mockData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -56,7 +56,7 @@ export default function TrendCharts() {
 
         {/* Average Price Chart */}
         <div className="h-[300px]">
-          <h3 className="text-sm font-medium text-gray-600 mb-4">Average Price Over Time</h3>
+          <h3 className="text-xl font-semibold text-[#111827] mb-6">Average Price Over Time</h3>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={mockData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -79,6 +79,6 @@ export default function TrendCharts() {
           </ResponsiveContainer>
         </div>
       </div>
-    </div>
+    </section>
   );
 } 
