@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { mockListings, MockListing } from '../mock/buyApiResults';
 import StatCard from '../components/StatCard';
