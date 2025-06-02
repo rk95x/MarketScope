@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -14,12 +14,27 @@ export default function Sidebar() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Close sidebar when route changes on mobile
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (window.innerWidth < 768) {
+        setIsOpen(false);
+      }
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router]);
+
   return (
     <>
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-colors"
+        aria-label="Toggle menu"
       >
         <svg
           className="h-6 w-6 text-gray-600"
@@ -73,6 +88,7 @@ export default function Sidebar() {
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
       )}
     </>
