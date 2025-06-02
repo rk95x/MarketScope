@@ -1,6 +1,8 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 const navItems = [
   { name: 'Search Products', href: '/', icon: '🔍' },
@@ -10,22 +12,15 @@ const navItems = [
 ];
 
 export default function Sidebar() {
-  const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   // Close sidebar when route changes on mobile
   useEffect(() => {
-    const handleRouteChange = () => {
-      if (window.innerWidth < 768) {
-        setIsOpen(false);
-      }
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router]);
+    if (window.innerWidth < 768) {
+      setIsOpen(false);
+    }
+  }, [pathname]);
 
   return (
     <>
@@ -69,7 +64,7 @@ export default function Sidebar() {
         
         <nav className="space-y-2">
           {navItems.map((item) => {
-            const isActive = router.pathname === item.href;
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
