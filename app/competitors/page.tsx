@@ -17,6 +17,19 @@ export default function CompetitorsPage() {
             Compare sellers by listings, pricing trends, and sell-through rates.
           </p>
         </div>
+
+        {/* Placeholder Content */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+          <div className="text-center py-12">
+            <div className="text-4xl mb-4">📈</div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Competitor Analysis Coming Soon
+            </h2>
+            <p className="text-gray-600">
+              We're working on powerful tools to help you analyze and compare seller performance.
+            </p>
+          </div>
+        </div>
       </div>
     </main>
   );

@@ -17,6 +17,19 @@ export default function SettingsPage() {
             Here you'll be able to manage saved searches, alerts, and user preferences.
           </p>
         </div>
+
+        {/* Placeholder Content */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+          <div className="text-center py-12">
+            <div className="text-4xl mb-4">⚙️</div>
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Settings Panel Coming Soon
+            </h2>
+            <p className="text-gray-600">
+              We're building a comprehensive settings panel to help you customize your experience.
+            </p>
+          </div>
+        </div>
       </div>
     </main>
   );
