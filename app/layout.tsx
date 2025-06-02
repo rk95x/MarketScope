@@ -1,6 +1,6 @@
 import { Inter } from 'next/font/google';
 import Sidebar from '../components/Sidebar';
-import Topbar from '../components/Topbar';
+import TopbarWrapper from '../components/TopbarWrapper';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,12 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <div className="min-h-screen bg-[#F0F9FF]">
           <Sidebar />
-          <Topbar 
-            searchTerm=""
-            onSearchChange={() => {}}
-            viewType="Product"
-            onViewTypeChange={() => {}}
-          />
+          <TopbarWrapper />
           {children}
         </div>
       </body>
