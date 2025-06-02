@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const navItems = [
-  { name: 'Dashboard', href: '/', icon: '📊' },
-  { name: 'Search', href: '/search', icon: '🔍' },
-  { name: 'Sellers', href: '/sellers', icon: '👥' },
+  { name: 'Search Products', href: '/', icon: '🔍' },
+  { name: 'Search Sellers', href: '/search-sellers', icon: '👥' },
   { name: 'Competitors', href: '/competitors', icon: '📈' },
   { name: 'Settings', href: '/settings', icon: '⚙️' },
 ];
@@ -84,6 +83,9 @@ export default function Sidebar() {
               >
                 <span className="text-xl">{item.icon}</span>
                 <span className="font-medium">{item.name}</span>
+                {isActive && (
+                  <span className="ml-auto w-2 h-2 bg-white rounded-full" />
+                )}
               </Link>
             );
           })}

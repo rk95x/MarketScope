@@ -2,12 +2,12 @@ import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import Head from 'next/head';
 
-export default function Competitors() {
+export default function Settings() {
   return (
     <>
       <Head>
-        <title>Competitor Insights – MarketScope</title>
-        <meta name="description" content="Compare sellers by listings, pricing trends, and sell-through rates." />
+        <title>Settings – MarketScope</title>
+        <meta name="description" content="Manage saved searches, alerts, and preferences." />
       </Head>
 
       <div className="min-h-screen bg-[#F0F9FF]">
@@ -23,10 +23,10 @@ export default function Competitors() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-8 md:mb-12">
               <h1 className="text-3xl md:text-4xl font-bold text-[#111827] mb-3">
-                Competitor Insights – Coming Soon
+                Settings – Coming Soon
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Compare sellers by listings, pricing trends, and sell-through rates.
+                Here you'll be able to manage saved searches, alerts, and preferences.
               </p>
             </div>
           </div>

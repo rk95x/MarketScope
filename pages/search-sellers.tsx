@@ -9,9 +9,9 @@ import TrendCharts from '../components/TrendCharts';
 import { StatCardShimmer, ProductCardShimmer } from '../components/LoadingShimmer';
 import Head from 'next/head';
 
-export default function Home() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [viewType, setViewType] = useState<'Product' | 'Seller'>('Product');
+export default function SearchSellers() {
+  const [searchTerm, setSearchTerm] = useState('seller:');
+  const [viewType, setViewType] = useState<'Product' | 'Seller'>('Seller');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<MockListing | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<MockListing[]>([]);
@@ -55,8 +55,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Search Products – MarketScope</title>
-        <meta name="description" content="Search and analyze eBay product listings and trends." />
+        <title>Search Sellers – MarketScope</title>
+        <meta name="description" content="Search and analyze eBay sellers and their listings." />
       </Head>
 
       <div className="min-h-screen bg-[#F0F9FF]">
@@ -73,10 +73,10 @@ export default function Home() {
             {/* Welcome Header */}
             <div className="text-center mb-8 md:mb-12">
               <h1 className="text-3xl md:text-4xl font-bold text-[#111827] mb-3">
-                Welcome to MarketScope
+                Search Sellers
               </h1>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Instant insights into eBay listings, trends, and sellers.
+                You can search by seller username here. Try 'seller:tech_world_uk'
               </p>
             </div>
 
@@ -182,13 +182,6 @@ export default function Home() {
           </div>
         </main>
 
-        {/* Footer */}
-        <footer className="ml-0 md:ml-64 py-6 px-4 md:px-6 bg-white border-t border-gray-200">
-          <div className="max-w-7xl mx-auto text-center text-sm text-gray-500">
-            © 2025 MarketScope. All rights reserved.
-          </div>
-        </footer>
-
         {/* Product Modal */}
         {selectedProduct && (
           <ProductModal
@@ -199,4 +192,4 @@ export default function Home() {
       </div>
     </>
   );
-}
+} 
