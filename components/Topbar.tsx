@@ -14,10 +14,10 @@ export default function Topbar({ searchTerm, onSearchChange, viewType, onViewTyp
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('30 days');
 
   return (
-    <div className="fixed top-0 left-0 md:left-64 right-0 bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex flex-col md:flex-row items-start md:items-center justify-between space-y-2 md:space-y-0 transition-all duration-300 z-50">
+    <div className="fixed top-0 left-0 md:left-64 right-0 bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex flex-col md:flex-row items-start md:items-center justify-between space-y-2 md:space-y-0 transition-all duration-300 z-40">
 
       {/* Search input */}
-      <div className="flex-1 w-full max-w-2xl">
+      <div className="flex-1 w-full max-w-2xl ml-12 md:ml-0">
         <div className="relative">
           <input
             type="text"
