@@ -16,7 +16,8 @@ export default function Topbar({ searchTerm, onSearchChange, viewType, onViewTyp
   return (
     <div className="fixed top-0 left-0 md:left-64 right-0 bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex flex-col md:flex-row items-start md:items-center justify-between space-y-2 md:space-y-0 transition-all duration-300 z-50">
 
-      <div className="flex-1 max-w-2xl">
+      {/* Search input */}
+      <div className="flex-1 w-full max-w-2xl">
         <div className="relative">
           <input
             type="text"
@@ -41,7 +42,9 @@ export default function Topbar({ searchTerm, onSearchChange, viewType, onViewTyp
         </div>
       </div>
 
-      <div className="flex items-center space-x-2 md:space-x-4">
+      {/* Filters */}
+      <div className="flex flex-wrap items-center gap-2 md:gap-4">
+        {/* Time Filters */}
         <div className="flex space-x-1 md:space-x-2">
           {(['Daily', '7 days', '30 days'] as TimeFilter[]).map((filter) => (
             <button
@@ -50,7 +53,7 @@ export default function Topbar({ searchTerm, onSearchChange, viewType, onViewTyp
               className={`px-2 md:px-3 py-1 rounded-md text-sm font-medium transition-colors ${
                 timeFilter === filter
                   ? 'bg-[#3B82F6] text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               {filter}
@@ -58,6 +61,7 @@ export default function Topbar({ searchTerm, onSearchChange, viewType, onViewTyp
           ))}
         </div>
 
+        {/* View Toggle */}
         <select
           value={viewType}
           onChange={(e) => onViewTypeChange(e.target.value as ViewType)}
@@ -69,4 +73,4 @@ export default function Topbar({ searchTerm, onSearchChange, viewType, onViewTyp
       </div>
     </div>
   );
-} 
+}
