@@ -19,7 +19,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
             {product.title}
           </h3>
           <p className="text-sm text-gray-500 mt-1">
-            Listed: {new Date(product.listedDate).toLocaleDateString()}
+            Last sold: {new Date(product.soldDate).toLocaleDateString()}
           </p>
         </div>
 
@@ -33,7 +33,7 @@ export default function ProductCard({ product, onClick }: ProductCardProps) {
         {/* Quantity Column */}
         <div className="w-24">
           <p className="text-sm text-gray-600">
-            {product.quantity} units
+            {product.salesLast30Days} units
           </p>
         </div>
 
