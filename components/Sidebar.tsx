@@ -13,18 +13,52 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleRouteChange = () => {
+      if (window.innerWidth < 768) {
+        setIsOpen(false);
+      }
+    };
+
+    if (window.innerWidth < 768) {
+      setIsOpen(false);
+    }
+
+  }, [pathname]);
 
   return (
     <>
-      {/* Sidebar - now a flex item */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-colors"
+        aria-label="Toggle menu"
+      >
+        <svg
+          className="h-6 w-6 text-gray-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+          />
+        </svg>
+      </button>
+
       <div
-        className="h-full w-64 bg-white border-r border-gray-200 p-4"
+        className={`fixed top-0 left-0 h-full w-64 bg-white border-r border-gray-200 p-4 transform transition-transform duration-300 ease-in-out z-40 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        }`}
       >
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-[#111827]">MarketScope</h1>
         </div>
 
-        {/* Mock Data Banner */}
         <div className="mb-6 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p className="text-sm text-yellow-800">
             ⚠️ This demo uses mock data while we await eBay API approval.
@@ -43,6 +77,7 @@ export default function Sidebar() {
                     ? 'bg-[#3B82F6] text-white'
                     : 'text-gray-600 hover:bg-gray-50'
                 }`}
+                onClick={() => setIsOpen(false)}
               >
                 <span className="text-xl">{item.icon}</span>
                 <span className="font-medium">{item.name}</span>
@@ -54,6 +89,14 @@ export default function Sidebar() {
           })}
         </nav>
       </div>
+
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
     </>
   );
 } 

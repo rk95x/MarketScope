@@ -60,7 +60,7 @@ export default function HomePage() {
         viewType={viewType}
         onViewTypeChange={setViewType}
       />
-      <main className="p-6">
+      <main>
         <div className="max-w-7xl mx-auto">
           {/* Welcome Header */}
           <div className="text-center mb-8 md:mb-12">
