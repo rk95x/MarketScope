@@ -60,9 +60,8 @@ export default function SearchSellersClient() {
         viewType={viewType}
         onViewTypeChange={setViewType}
       />
-      {/* Main content area - remove padding */}
-      <main> {/* Adjusted padding */}
-        <div className="max-w-7xl mx-auto">
+      <div className="ml-0 md:ml-64 pt-16 p-6 max-w-7xl mx-auto">
+        <main>
           {/* Welcome Header */}
           <div className="text-center mb-8 md:mb-12">
             <h1 className="text-3xl md:text-4xl font-bold text-[#111827] mb-3">

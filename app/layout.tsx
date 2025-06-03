@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import Sidebar from '../components/Sidebar';
 import './globals.css';
+import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,10 +17,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      </Head>
       <body className={inter.className}>
         <div className="min-h-screen bg-[#F0F9FF]">
           <Sidebar />
-          <div className="ml-0 md:ml-64 pt-16 p-6">
+          <div>
             {children}
           </div>
         </div>
