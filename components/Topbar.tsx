@@ -31,7 +31,7 @@ export default function Topbar({
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search products or sellers..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007BFF] focus:border-transparent"
             />
             <div className="absolute left-3 top-2.5 text-gray-400">
               🔍
@@ -46,8 +46,8 @@ export default function Topbar({
               onClick={() => onViewTypeChange('Product')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 viewType === 'Product'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-[#007BFF] text-white shadow-sm'
+                  : 'text-[#333333] hover:text-[#007BFF]'
               }`}
             >
               Products
@@ -56,8 +56,8 @@ export default function Topbar({
               onClick={() => onViewTypeChange('Seller')}
               className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                 viewType === 'Seller'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-[#007BFF] text-white shadow-sm'
+                  : 'text-[#333333] hover:text-[#007BFF]'
               }`}
             >
               Sellers
@@ -72,8 +72,8 @@ export default function Topbar({
                 onClick={() => setTimeFilter(filter)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   timeFilter === filter
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-[#007BFF] text-white shadow-sm'
+                    : 'text-[#333333] hover:text-[#007BFF]'
                 }`}
               >
                 {filter}

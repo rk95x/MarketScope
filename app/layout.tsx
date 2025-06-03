@@ -21,11 +21,14 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </Head>
       <body className={inter.className}>
-        <div className="min-h-screen bg-[#F0F9FF]">
+        <div className="min-h-screen bg-[#FAFAFA]">
           <Sidebar />
           <div>
             {children}
           </div>
+          <footer className="text-center text-gray-500 text-sm py-4 border-t border-gray-200 bg-white ml-0 md:ml-64">
+            © 2025 MarketScope. All rights reserved.
+          </footer>
         </div>
       </body>
     </html>

@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 
 const navItems = [
   { name: 'Search Products', href: '/', icon: '🔍' },
-  { name: 'Search Sellers', href: '/search-sellers', icon: '👥' },
+  { name: 'Search Sellers', href: '/search-sellers', icon: '👥', badge: 'Beta' },
   { name: 'Competitors', href: '/competitors', icon: '📈' },
   { name: 'Settings', href: '/settings', icon: '⚙️' },
 ];
@@ -74,13 +74,18 @@ export default function Sidebar() {
                 href={item.href}
                 className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                   isActive
-                    ? 'bg-[#3B82F6] text-white'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-[#007BFF] text-white'
+                    : 'text-[#333333] hover:bg-gray-50'
                 }`}
                 onClick={() => setIsOpen(false)}
               >
                 <span className="text-xl">{item.icon}</span>
                 <span className="font-medium">{item.name}</span>
+                {item.badge && (
+                  <span className="ml-auto text-xs bg-[#C7F464] text-black px-2 py-0.5 rounded-full">
+                    {item.badge}
+                  </span>
+                )}
                 {isActive && (
                   <span className="ml-auto w-2 h-2 bg-white rounded-full" />
                 )}

@@ -67,7 +67,7 @@ export default function HomePage() {
             <h1 className="text-3xl md:text-4xl font-bold text-[#111827] mb-3">
               Welcome to MarketScope
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-[#333333] max-w-2xl mx-auto">
               Instant insights into eBay listings, trends, and sellers.
             </p>
           </div>
@@ -107,7 +107,7 @@ export default function HomePage() {
           {/* Main Content Area */}
           <div className="grid grid-cols-1 lg:col-span-3 gap-6 mb-10">
             {/* Product List */}
-            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300 overflow-hidden">
+            <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 transition-all duration-300 overflow-hidden">
               <div className="p-4 border-b border-gray-100">
                 <h2 className="text-lg font-semibold text-[#111827]">Search Results</h2>
                 <p className="text-sm text-gray-500 mt-1">
@@ -131,7 +131,7 @@ export default function HomePage() {
                     />
                   ))
                 ) : (
-                  <div className="p-8 text-center text-gray-500">
+                  <div className="p-8 text-center text-[#333333]">
                     No products found matching your search criteria.
                   </div>
                 )}
@@ -141,7 +141,7 @@ export default function HomePage() {
             {/* Right Sidebar */}
             <div className="space-y-6">
               {/* Top Sellers Chart */}
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 transition-all duration-300">
+              <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 md:p-6 transition-all duration-300">
                 <h3 className="text-lg font-semibold text-[#111827] mb-4">
                   Top Sellers
                 </h3>
@@ -155,7 +155,7 @@ export default function HomePage() {
                   ) : (
                     topSellers.map((seller) => (
                       <div key={seller.itemId} className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600 truncate mr-4">
+                        <span className="text-sm text-[#333333] truncate mr-4">
                           {seller.sellerUsername}
                         </span>
                         <span className="text-sm font-medium text-[#111827] whitespace-nowrap">
