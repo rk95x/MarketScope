@@ -96,7 +96,7 @@ export default function HomePage() {
                 />
                 <StatCard
                   title="Average Price"
-                  value={`$${avgPrice.toFixed(2)}`}
+                  value={`£${avgPrice.toFixed(2)}`}
                   icon="📊"
                   trend={{ value: 5, isPositive: false }}
                 />

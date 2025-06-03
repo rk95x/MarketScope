@@ -51,9 +51,9 @@ export default function ProductCard({ product, onClick, isHeader = false }: Prod
 
         {/* Price Column */}
         <div className="w-24">
-          <p className="text-sm font-medium text-[#111827]">
-            ${product.price.toFixed(2)}
-          </p>
+          <div className="text-sm font-medium text-[#111827]">
+            £{product.price.toFixed(2)}
+          </div>
         </div>
 
         {/* Quantity Column */}

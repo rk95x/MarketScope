@@ -42,9 +42,9 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Price</p>
-                  <p className="text-lg font-semibold text-[#111827]">
-                    ${product.price.toFixed(2)}
-                  </p>
+                  <div className="text-2xl font-bold text-[#111827]">
+                    £{product.price.toFixed(2)}
+                  </div>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Units Sold (30d)</p>
@@ -54,9 +54,9 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Total Revenue</p>
-                  <p className="text-lg font-semibold text-[#10B981]">
-                    ${(product.price * product.salesLast30Days).toFixed(2)}
-                  </p>
+                  <div className="text-lg font-semibold text-[#10B981]">
+                    £{(product.price * product.salesLast30Days).toFixed(2)}
+                  </div>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <p className="text-sm text-gray-500">Launch Date</p>
