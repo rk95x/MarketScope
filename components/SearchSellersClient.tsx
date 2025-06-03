@@ -61,7 +61,7 @@ export default function SearchSellersClient() {
         onViewTypeChange={setViewType}
       />
       {/* Main content area - padding to clear fixed Topbar */}
-      <main className="pt-16 p-4 md:p-6"> {/* Adjusted padding */}
+      <main className="pt-16 p-6"> {/* Adjusted padding */}
         <div className="max-w-7xl mx-auto">
           {/* Welcome Header */}
           <div className="text-center mb-8 md:mb-12">

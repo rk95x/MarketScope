@@ -60,7 +60,7 @@ export default function HomePage() {
         viewType={viewType}
         onViewTypeChange={setViewType}
       />
-      <main className="flex-1 pt-16 p-4 md:p-6">
+      <main className="pt-16 p-6">
         <div className="max-w-7xl mx-auto">
           {/* Welcome Header */}
           <div className="text-center mb-8 md:mb-12">
@@ -105,7 +105,7 @@ export default function HomePage() {
           </div>
 
           {/* Main Content Area */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 lg:col-span-3 gap-6 mb-10">
             {/* Product List */}
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300 overflow-hidden">
               <div className="p-4 border-b border-gray-100">
