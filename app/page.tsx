@@ -53,7 +53,7 @@ export default function HomePage() {
     .slice(0, 5);
 
   return (
-    <>
+    <div>
       <Topbar 
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -171,7 +171,7 @@ export default function HomePage() {
 
           {/* Trend Charts */}
           <TrendCharts />
-        </div>
+        </main>
 
         {/* Product Modal */}
         {selectedProduct && (
@@ -180,7 +180,7 @@ export default function HomePage() {
             onClose={() => setSelectedProduct(null)}
           />
         )}
-      </main>
-    </>
+      </div>
+    </div>
   );
 } 

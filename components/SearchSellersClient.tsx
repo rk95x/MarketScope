@@ -53,7 +53,7 @@ export default function SearchSellersClient() {
     .slice(0, 5);
 
   return (
-    <>
+    <div>
       <Topbar
         searchTerm={searchTerm}
         onSearchChange={setSearchTerm}
@@ -72,7 +72,6 @@ export default function SearchSellersClient() {
             </p>
           </div>
 
-          {/* Rest of the content... */}
           {/* Stats Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8 mt-8 md:mt-12">
             {isLoading ? (
@@ -172,7 +171,7 @@ export default function SearchSellersClient() {
 
           {/* Trend Charts */}
           <TrendCharts />
-        </div>
+        </main>
 
         {/* Product Modal */}
         {selectedProduct && (
@@ -181,7 +180,7 @@ export default function SearchSellersClient() {
             onClose={() => setSelectedProduct(null)}
           />
         )}
-      </main>
-    </>
+      </div>
+    </div>
   );
 } 
