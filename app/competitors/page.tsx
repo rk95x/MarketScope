@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function CompetitorsPage() {
   return (
-    <main className="pt-24 p-4 md:p-6">
+    <main className="p-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-4xl font-bold text-[#111827] mb-3">
@@ -18,7 +18,6 @@ export default function CompetitorsPage() {
           </p>
         </div>
 
-        {/* Placeholder Content */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
           <div className="text-center py-12">
             <div className="text-4xl mb-4">📈</div>

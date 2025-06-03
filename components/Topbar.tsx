@@ -21,7 +21,7 @@ export default function Topbar({
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('30 days');
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 z-30 md:left-64">
+    <div className="h-16 bg-white border-b border-gray-200">
       <div className="h-full px-4 flex items-center justify-between">
         {/* Search Bar */}
         <div className="flex-1 max-w-2xl">
