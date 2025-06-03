@@ -154,7 +154,7 @@ export default function SearchSellersClient() {
                       <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
                       <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
                     </>
-                  ) : (n
+                  ) : (
                     topSellers.map((seller) => (
                       <div key={seller.itemId} className="flex items-center justify-between">
                         <span className="text-sm text-gray-600 truncate mr-4">
