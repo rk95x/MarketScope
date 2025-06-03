@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'MarketScope',
   description: 'eBay analytics and insights platform',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
