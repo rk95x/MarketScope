@@ -37,7 +37,7 @@ export default function HomePage() {
     .slice(0, 5);
 
   return (
-    <main className="ml-0 md:ml-64 pt-24 p-4 md:p-6 transition-all duration-300">
+    <main className="pt-24 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Welcome Header */}
         <div className="text-center mb-8 md:mb-12">

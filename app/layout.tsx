@@ -21,7 +21,9 @@ export default function RootLayout({
         <div className="min-h-screen bg-[#F0F9FF]">
           <Sidebar />
           <TopbarWrapper />
-          {children}
+          <div className="flex-1 ml-0 md:ml-64">
+            {children}
+          </div>
         </div>
       </body>
     </html>
